@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 import "./App.css";
 
 const App = () => {
@@ -24,26 +25,28 @@ const App = () => {
       });
   }, []);
 
+  //Create a function to handle the search box input
+  //This function will be called when the input value changes
+  const onSearchChange = (event) => {
+    //Get the value from the input field and convert it to lower case
+    const searchString = event.target.value.toLowerCase();
+
+    //Create a new array filteredMonsters and find the monsters that match the searchString
+    const newFilteredMonsters = monsters.filter((monsters) =>
+      monsters.name.toLowerCase().includes(searchString)
+    );
+
+    //Set the filteredMonsters to the new array
+    //This will update the filteredMonsters to show only the monsters that match the searchString
+    setFilteredMonsters(newFilteredMonsters);
+  };
+
   return (
-    <>
-      <input
-        type="search"
-        onChange={(event) => {
-          //Get the value from the input field and convert it to lower case
-          const searchString = event.target.value.toLowerCase();
-
-          //Create a new array filteredMonsters and find the monsters that match the searchString
-          const newFilteredMonsters = monsters.filter((monsters) =>
-            monsters.name.toLowerCase().includes(searchString)
-          );
-
-          //Set the filteredMonsters to the new array
-          //This will update the filteredMonsters to show only the monsters that match the searchString
-          setFilteredMonsters(newFilteredMonsters);
-        }}
-      />
+    <div className="app-container">
+      <h1 className="app-title">Monsters Rolodex</h1>
+      <SearchBox onChangeHandler={onSearchChange} />
       <CardList monsters={filteredMonsters} />
-    </>
+    </div>
   );
 };
 
